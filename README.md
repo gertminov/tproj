@@ -8,13 +8,13 @@ real tool
 ## How to use
 
 ```sh
-tproj // this will create a folder with the current date and time as the name
+tproj # this will create a folder with the current date and time as the name
 ```
 
 or:
 
 ```sh
-tproj myFoldername // the will create a folder named "myFoldername"
+tproj myFoldername # the will create a folder named "myFoldername"
 ```
 
 # Todo
