@@ -21,4 +21,4 @@ tproj myFoldername # the will create a folder named "myFoldername"
 
 - [ ] make the base folder configurable. currently the base folder is
       `F:/tempProjects`
-- [ ] upload the auto cleaner part.
+- [ ] explain how cleaner part works
