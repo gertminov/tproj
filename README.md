@@ -5,12 +5,12 @@ It is my first endever with Rust so it's more of a learning experience than a re
 ## How to use
 
 ```shell
-tproj //this will create a folder with the current date and time as the name
+tproj // this will create a folder with the current date and time as the name
 ```
 or:
 
  ```shell
-tproj myFoldername //the will create a folder named "myFoldername"
+tproj myFoldername // the will create a folder named "myFoldername"
 ```
 
 # Todo
