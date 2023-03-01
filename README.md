@@ -1,5 +1,7 @@
 # tproj
 
+### [Download](https://github.com/gertminov/tproj/releases/latest)
+
 This little command line tool helps you to create temporary project folders, for
 when you just want to try something out and have it deleted automatically later.
 The tool is split into two parts. The CLI tool, that creates the project folder,
