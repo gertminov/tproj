@@ -27,5 +27,4 @@ tproj myFoldername # the will create a folder named "myFoldername"
 2. Create a new task
 3. Set the trigger to a schedule you like (like every week or so)
 4. Set the action to "execute program" 
-      1. set the path to the path of tempCleaner.exe
-      2. add arguments -p <path/to/temp/projects/folder>
+      1. set the path to the path of tprojCleaner.exe
