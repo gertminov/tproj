@@ -1,5 +1,5 @@
 [package]
-name = "minigrep"
+name = "tproj"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.23"
+dirs = "4.0.0"
 toml = "0.7.2"

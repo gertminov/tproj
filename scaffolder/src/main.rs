@@ -1,10 +1,12 @@
 use chrono::prelude::*;
 use std::env;
 use std::fs;
-use std::fs::File;
+use std::fs::{File};
 use std::io::Read;
+use std::path::PathBuf;
 use std::process::Command;
 use toml::Value;
+use dirs;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -26,7 +28,6 @@ fn main() {
         .and_then(|_| fs::create_dir(tproj_dir.clone() + "/out"))
         .and_then(|_| {
             let terminal_args = format!("{}/working", tproj_dir.clone());
-            println!("{}", terminal_args);
             Command::new("wt")
                 .args(["-w 0 nt", "-d", &terminal_args])
                 .status()
@@ -41,13 +42,42 @@ fn ensure_trailing_slash(path: &str) -> String {
     if !new_path.ends_with("/") {
         new_path.push('/')
     }
-    return new_path
+    return new_path;
 }
 
-fn load_config() -> Value{
-    let mut file = File::open("config.toml").expect("failed to open config file");
+fn load_config() -> Value {
+    let config_path = get_config_path();
+    if !config_path.exists() {
+        create_config_file(&config_path);
+    }
+    let mut file = File::open(config_path).expect("failed to open config file");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("failed to read file");
     let toml: Value = toml::from_str(&contents).expect("failed to parse TOML");
-    return toml
+    return toml;
+}
+
+fn create_config_file(config_path: &PathBuf) {
+    let config = dirs::home_dir()
+        .map_or_else(
+            || "tempprojectdir = '' ".to_string(),
+            |dir| {
+                format!("tempprojectdir = '{}'", dir.to_str().unwrap())
+            }
+        );
+
+    fs::write(&config_path, config)
+        .expect("could not write base config. please create a file names tproj.toml in the install directory");
+}
+
+
+fn get_config_path() -> PathBuf {
+    return env::current_exe()
+        .expect("exe shoudl exist")
+        .canonicalize()
+        .expect("error getting currentPath")
+        .parent()
+        .expect("the exe should be in a folder")
+        .join("./tproj.toml")
+        .to_owned();
 }
