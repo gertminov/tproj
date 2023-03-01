@@ -16,7 +16,7 @@ real tool.
 1. open `tproj.toml` and set `tempprojectdir` to the directory that sould hold your temporary projects
 2. Add `tproj.exe` to your PATH. Either by adding the instal directory to the path,
 or by creating a Symlink from the exe to a directory that is already in the PATH
-3. [Set up the Cleaner Tool](#Cleaner_Tool)
+3. [Set up the Cleaner Tool](#cleaner-tool)
 
 ## How to use
 
