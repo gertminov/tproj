@@ -2,16 +2,36 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"github.com/BurntSushi/toml"
 	"github.com/aerogo/log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 )
+
+type Config struct {
+	Tempprojectdir string `toml:"tempprojectdir"`
+}
 
 func main() {
 	path := ""
 	flag.StringVar(&path, "p", "", "path of temp project directory")
 	flag.Parse()
+
+	if path == "" {
+		lookPath, err := exec.LookPath(os.Args[0])
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(lookPath)
+		execDir := filepath.Dir(lookPath)
+		var config Config
+		toml.DecodeFile(execDir+"/tproj.toml", &config)
+		path = config.Tempprojectdir
+
+	}
 
 	logging := log.New()
 	logging.AddWriter(log.File(path + "/log.log"))
