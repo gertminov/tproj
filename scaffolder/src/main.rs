@@ -4,9 +4,10 @@ use std::fs;
 use std::fs::{File};
 use std::io::Read;
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command, ExitStatus};
 use toml::Value;
 use dirs;
+use win32console::console::WinConsole;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -21,20 +22,35 @@ fn main() {
     let toml = load_config();
     let base_dir_toml = toml["tempprojectdir"].as_str().unwrap();
     let base_dir = ensure_trailing_slash(base_dir_toml);
-    let tproj_dir = base_dir + &dir_name;
+    let project_dir = base_dir + &dir_name;
 
-    match fs::create_dir_all(tproj_dir.clone())
-        .and_then(|_| fs::create_dir(tproj_dir.clone() + "/working"))
-        .and_then(|_| fs::create_dir(tproj_dir.clone() + "/out"))
+
+    match fs::create_dir_all(&project_dir)
+        .and_then(|_| fs::create_dir(project_dir.clone() + "/working"))
+        .and_then(|_| fs::create_dir(project_dir.clone() + "/out"))
         .and_then(|_| {
-            let terminal_args = format!("{}/working", tproj_dir.clone());
-            Command::new("wt")
-                .args(["-w 0 nt", "-d", &terminal_args])
-                .status()
+            let windows_working_path = (project_dir.clone() + "/working").replace("/", "\\");
+            let process_len = get_process_list_len();
+
+            if process_len == 0 {
+                start_explorer(&windows_working_path)
+            } else {
+                start_terminal(&windows_working_path)
+            }
         }) {
         Ok(_) => println!("created dir"),
         Err(e) => println!("error creating dir: {}", e),
     }
+}
+
+fn start_explorer(path: &str) -> Result<ExitStatus, std::io::Error> {
+    Command::new("explorer").args([path]).status()
+}
+
+fn start_terminal(path: &str) -> Result<ExitStatus, std::io::Error> {
+    Command::new("wt")
+        .args(["-w 0 nt", "-d", path])
+        .status()
 }
 
 fn ensure_trailing_slash(path: &str) -> String {
@@ -43,6 +59,11 @@ fn ensure_trailing_slash(path: &str) -> String {
         new_path.push('/')
     }
     return new_path;
+}
+
+fn get_process_list_len() -> u32 {
+    let process_id = WinConsole::get_process_list().unwrap();
+    process_id.get(1).unwrap().clone()
 }
 
 fn load_config() -> Value {
@@ -63,7 +84,7 @@ fn create_config_file(config_path: &PathBuf) {
             || "tempprojectdir = '' ".to_string(),
             |dir| {
                 format!("tempprojectdir = '{}'", dir.to_str().unwrap())
-            }
+            },
         );
 
     fs::write(&config_path, config)
