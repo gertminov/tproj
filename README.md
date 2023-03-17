@@ -20,15 +20,15 @@ real tool.
 or by creating a Symlink from the exe to a directory that is already in the PATH
 3. [Set up the Cleaner Tool](#cleaner-tool)
 
-## How to use
+# How to use
 
-### CLI Tool
+## CLI Tool
 
 ```sh
 tproj # this will create a folder with the current date and time as the name
 ```
 
-or:
+### Custom Name
 
 ```sh
 tproj myFoldername # the will create a folder named "myFoldername"
@@ -46,8 +46,20 @@ If you run both commands, your tproj folder should look somethin like this:
     └── working
 ```
 
+### Flags
 
-### Cleaner Tool
+to open an explorer window instead of a new terminal window use
+ ```pwsh
+ tproj -e
+ ```
+ 
+ to open both a terminal and an explorer window use
+ 
+ ```pwsh
+ tproj -b
+ ```
+
+## Cleaner Tool
 1. Open Windows task scheduler
 2. Create a new task
 3. Set the trigger to a schedule you like (like every week or so)
