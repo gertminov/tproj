@@ -8,4 +8,6 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.23"
 dirs = "4.0.0"
+getopts = "0.2.21"
 toml = "0.7.2"
+win32console = "0.1.5"

@@ -9,13 +9,37 @@ use toml::Value;
 use dirs;
 use win32console::console::WinConsole;
 
+extern crate getopts;
+
+use getopts::Options;
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let local_time = Local::now();
     let formatted_time = local_time.format("%Y-%m-%d %H-%M").to_string();
     let mut dir_name = formatted_time;
-    if args.len() > 1 {
-        dir_name = args[1].clone();
+    let program = args[0].clone();
+    // if args.len() > 1 {
+    //     dir_name = args[1].clone();
+    // }
+
+    let mut opts = Options::new();
+    opts.optflag("e", "explorer", "opens explorer in newly created folder");
+    opts.optflag("b", "both", "opens both new terminal window and explrer in created folder");
+    opts.optflag("h", "help", "print this help menu");
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m) => { m }
+        Err(f) => { panic!("{}", f.to_string()) }
+    };
+    if matches.opt_present("h") {
+        print_usage(&program, opts);
+        return;
+    }
+    let open_explorer = matches.opt_present("e");
+    let open_both = matches.opt_present("b");
+
+    if !matches.free.is_empty() {
+        dir_name = matches.free.first().unwrap().clone();
     }
 
 
@@ -32,8 +56,12 @@ fn main() {
             let windows_working_path = (project_dir.clone() + "/working").replace("/", "\\");
             let process_len = get_process_list_len();
 
-            if process_len == 0 {
+            if process_len == 0 || open_explorer {
                 start_explorer(&windows_working_path)
+            } else if open_both {
+                let res_terminal = start_terminal(&windows_working_path);
+                let res_explorer = start_explorer(&windows_working_path);
+                res_explorer.and(res_terminal)
             } else {
                 start_terminal(&windows_working_path)
             }
@@ -41,6 +69,11 @@ fn main() {
         Ok(_) => println!("created dir"),
         Err(e) => println!("error creating dir: {}", e),
     }
+}
+
+fn print_usage(program: &str, opts: Options) {
+    let brief = format!("Usage: {} [name] [options]", program);
+    print!("{}", opts.usage(&brief))
 }
 
 fn start_explorer(path: &str) -> Result<ExitStatus, std::io::Error> {
