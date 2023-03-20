@@ -13,7 +13,19 @@ it will not delete the project.
 It is my first endever with Rust so it's more of a learning experience than a
 real tool.
 
-## Get Started
+# Get Started
+
+## Automatic Install
+
+1. Download the [tproj-setup.msi](https://github.com/gertminov/tproj/releases/latest)
+2. Run the installer
+3. Choose a folder where the temporary projects should be stored (in the installer)
+4. Success
+
+Now every time you click the `tproj.exe` a fresh new folder will be created, that is deleted in a week.
+The `tproj.exe` shoud be added to your start menu, so typing `[Windows Key] tproj [Enter]` should be a very fast way to create a new folder
+
+## Manual Way
 
 1. open `tproj.toml` and set `tempprojectdir` to the directory that sould hold your temporary projects
 2. Add `tproj.exe` to your PATH. Either by adding the instal directory to the path,
