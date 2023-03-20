@@ -34,6 +34,10 @@ or by creating a Symlink from the exe to a directory that is already in the PATH
 
 # How to use
 
+## Without Terminal
+
+click the `tproj.exe`
+
 ## CLI Tool
 
 ```sh
