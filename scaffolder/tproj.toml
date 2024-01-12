@@ -1,1 +1,6 @@
-tempprojectdir = "C:/Users/Jacob/tempprojects/"
+tempprojectdir = "/Users/jacobheim/tproj"
+terminal = [
+    "open",
+    "-a",
+    "iTerm",
+]

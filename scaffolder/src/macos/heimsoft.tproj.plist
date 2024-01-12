@@ -10,7 +10,7 @@
 
     <key>ProgramArguments</key>
     <array>
-      <string>/Users/jacobheim/tproj/tproj</string>
+      <string>{{exe_location}}</string>
       <string>-c</string>
     </array>
 
