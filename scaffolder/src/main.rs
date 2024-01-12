@@ -107,6 +107,7 @@ fn load_config() -> Value {
     let mut file = File::open(config_path).expect("failed to open config file");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("failed to read file");
+    println!("contents: {}", &contents);
     let toml: Value = toml::from_str(&contents).expect("failed to parse TOML");
     return toml;
 }
@@ -120,6 +121,7 @@ fn create_config_file(config_path: &PathBuf) {
             },
         );
 
+    println!("{}", &config_path.to_string_lossy());
     fs::write(&config_path, config)
         .expect("could not write base config. please create a file names tproj.toml in the install directory");
 }
@@ -132,6 +134,6 @@ fn get_config_path() -> PathBuf {
         .expect("error getting currentPath")
         .parent()
         .expect("the exe should be in a folder")
-        .join("./tproj.toml")
+        .join("../debug/tproj.toml")
         .to_owned();
 }
