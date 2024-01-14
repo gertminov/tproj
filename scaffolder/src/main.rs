@@ -7,8 +7,6 @@ use std::path::PathBuf;
 use chrono::prelude::*;
 use random_str as random;
 
-#[cfg(target_os = "windows")]
-use win32console::console::WinConsole;
 
 use crate::args::{InputArgs, parse_args};
 use crate::cleaner::clean_old_projects;

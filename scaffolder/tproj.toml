@@ -1,6 +1,0 @@
-tempprojectdir = "/Users/jacobheim/tproj"
-terminal = [
-    "open",
-    "-a",
-    "iTerm",
-]

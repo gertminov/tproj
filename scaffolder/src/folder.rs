@@ -1,6 +1,8 @@
 use std::process::{Command, ExitStatus};
 
 use crate::terminal::{OpenTerminalCommand, start_terminal};
+#[cfg(target_os = "windows")]
+use win32console::console::WinConsole;
 
 pub fn open_folder(working_path: &str,
                    open_both: bool,
@@ -42,9 +44,10 @@ fn start_explorer(path: &str) -> Result<ExitStatus, std::io::Error> {
 
 
 fn get_process_list_len() -> u32 {
-    #[cfg(target_os = "windows")]{
+    if cfg!(target_os = "windows") {
         let process_id = WinConsole::get_process_list().unwrap();
         return process_id.get(1).unwrap().clone();
+    } else {
+        return 14;
     }
-    return 14;
 }
